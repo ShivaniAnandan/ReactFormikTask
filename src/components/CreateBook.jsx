@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const CreateBook = () => {
   const navigate = useNavigate();
+  // Initialize form values with empty strings
   const [initialValues, setInitialValues] = useState({
     title: '',
     author: '',
@@ -13,7 +14,8 @@ const CreateBook = () => {
     publicationDate: '',
     image: ''
   });
-
+  
+  // Array of random book images
   const bookImages = [
     "https://covers.openlibrary.org/b/id/8269481-L.jpg", // 1984 by George Orwell
     "https://covers.openlibrary.org/b/id/8282925-L.jpg", // The Great Gatsby by F. Scott Fitzgerald
@@ -27,28 +29,32 @@ const CreateBook = () => {
     "https://covers.openlibrary.org/b/id/8274201-L.jpg"  // The Brothers Karamazov by Fyodor Dostoevsky
   ];
 
+    // Validation schema using Yup
     const validationSchema = Yup.object().shape({
         title: Yup.string().required('Title is Required'), //formik.errors
         author: Yup.string().required('Author Name is Required'),
         ISBN: Yup.string().required('ISBN Number is Required'),
         publicationDate: Yup.date().required('Publication Date is Required'),
     })
-
+    // Create formik instance with initial values and validation schema
     const formik = useFormik({
         initialValues, //formik.values
         validationSchema,
         onSubmit: async (values) => {
+          // Generate a random image index
             const randomImageIndex = Math.floor(Math.random() * bookImages.length);
             const randomImage = bookImages[randomImageIndex];
+            // Create a new book object with random image
             const newBook = { ...values, image: randomImage };
+            // Post new book to API
             await axios.post(`https://6697d1a302f3150fb66f1dbc.mockapi.io/api/books/`, newBook)
                 .then(res => console.log(res.data))
                 .catch((err) => console.log(err))
-
+            // Navigate to books page
             navigate('/books');
         }
     })
-
+// commended it for reference
 //   const handleChange = (e) => {
 //     const { name, value } = e.target;
 //     setCreateBook((prevData) => ({...prevData, [name]: value }));

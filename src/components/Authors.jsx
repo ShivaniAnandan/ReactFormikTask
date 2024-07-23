@@ -3,24 +3,27 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 
 const Authors = ({setId}) => {
+    // Initialize state variables for authors and deleteAuthor
     const [authors, setAuthors] = useState([]);
     const [deleteAuthor, setDeleteAuthor] = useState([]);
     const navigate = useNavigate();
+    // Fetch data from API when the component mounts or when deleteAuthor changes
     useEffect(() => {
         fetchData();
     }, [deleteAuthor]);
+    // Function to fetch data from API
     const fetchData = async () => {
         await axios
             .get("https://6697d1a302f3150fb66f1dbc.mockapi.io/api/author")
             .then((res) => setAuthors(res.data))
             .catch((err) => console.log(err));
     };
-    /* to navigate to editauthor page  */
+    // Function to handle edit button click
     const handleEdit = (id) => {
         setId(id)
         navigate(`/editauthor/${id}`)
     }
-    // to perform delete
+    // Function to handle delete button click
     const handleDelete = async (id) => {
         await axios.delete(`https://6697d1a302f3150fb66f1dbc.mockapi.io/api/author/${id}`)
             .then(res => setDeleteAuthor(res.data))

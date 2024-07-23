@@ -6,13 +6,14 @@ import { useNavigate } from 'react-router-dom';
 
 const EditAuthor = ({id}) => {
     const navigate = useNavigate();
-
+    // Initialize form values with empty strings
     const [initialValues, setInitialValues] = useState({
         name: '',
         birthDate: '',
         biography: '',
         image: ''
     });
+    // Fetch the author data from the API when the component mounts
     useEffect(() => {
       fetchData();
     }, []);
@@ -23,8 +24,8 @@ const EditAuthor = ({id}) => {
         .then((res) => setInitialValues(res.data))
         .catch((err) => console.log(err));
     };
-  
-    const bookImages = [
+    // Array of random Author images
+    const authorImages = [
         "https://randomuser.me/api/portraits/women/1.jpg", 
         "https://randomuser.me/api/portraits/men/2.jpg", 
         "https://randomuser.me/api/portraits/women/3.jpg", 
@@ -37,23 +38,24 @@ const EditAuthor = ({id}) => {
         "https://randomuser.me/api/portraits/men/10.jpg" 
     ];
     
-  
+    // Validation schema using Yup
     const validationSchema = Yup.object().shape({
       name: Yup.string().required('Name is Required'), //formik.errors
       birthDate: Yup.date().required('BirthDate is Required'),
       biography: Yup.string().required('Biography is Required'),
       image: Yup.string().required('Image is Required')
     });
-  
+    // Create formik instance with initial values and validation schema
     const formik = useFormik({
-      initialValues,
-      enableReinitialize: true,
+      initialValues,//formik.values
+      enableReinitialize: true, // This allows Formik to update the form values when the initialValues change
       validationSchema,
       onSubmit: async (values) => {
+        // Put new author to API
         await axios.put(`https://6697d1a302f3150fb66f1dbc.mockapi.io/api/author/${id}`, values)
           .then(res => console.log(res.data))
           .catch(err => console.log(err));
-          
+        // Navigate to authors page
         navigate('/authors');
       }
     });
@@ -107,7 +109,7 @@ const EditAuthor = ({id}) => {
             onChange={formik.handleChange}
             className='fst-italic'
           >
-            {bookImages.map((image, index) => (
+            {authorImages.map((image, index) => (
               <option key={index} value={image}>{image}</option>
             ))}
           </select>

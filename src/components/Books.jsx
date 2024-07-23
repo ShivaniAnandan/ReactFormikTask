@@ -3,39 +3,40 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 
 const Books = ({ setId }) => {
+    // Initialize state variables for books and deleteBook
     const [books, setBooks] = useState([]);
     const [deleteBook, setDeleteBook] = useState([]);
     const navigate = useNavigate();
+    // Fetch data from API when the component mounts or when deleteBook changes
     useEffect(() => {
         fetchData();
     }, [deleteBook]);
+    // Function to fetch data from API
     const fetchData = async () => {
         await axios
             .get("https://6697d1a302f3150fb66f1dbc.mockapi.io/api/books/")
             .then((res) => setBooks(res.data))
             .catch((err) => console.log(err));
     };
+    // Function to handle edit button click
     const handleEdit = (id) => {
         setId(id)
         navigate(`/edit/${id}`)
     }
-
+    // Function to handle delete button click
     const handleDelete = async (id) => {
         await axios.delete(`https://6697d1a302f3150fb66f1dbc.mockapi.io/api/books/${id}`)
             .then(res => setDeleteBook(res.data))
             .catch(err => console.log(err))
     }
-    fetch("https://6697d1a302f3150fb66f1dbc.mockapi.io/api/books/").then(res => res.json())
-        .then(data => console.log(data));
+    
     return (
         <div>
             <div className="book-list-container bg-light">
                 <h1 className="fw-bold fst-italic">Books List</h1>
                 <div className="book-list">
                     {books.map((book, index) => (
-                        // Generate a unique key for each user card using user.id
                         <div key={`${book.id}`} className="book-card">
-                            {/* Conditionally render the avatar image based on user.id */}
                             <img
                                 src={book.image}
                                 alt={`${book.title}'s avatar`} className="card-img-top"
@@ -50,8 +51,9 @@ const Books = ({ setId }) => {
                                     {/* <Link to={`/edit/${user.id}`}>
                                         <button>Edit</button>
                                     </Link> */}
+                                    {/* Button to edit the user, calling handleEdit with the user's ID */}
                                     <button onClick={() => handleEdit(book.id)} className='bg-primary fw-bold fst-italic'>Edit</button>
-                                    {/* Button to delete the user, calling deleteUser with the user's ID */}
+                                    {/* Button to delete the user, calling handleDelete with the user's ID */}
                                     <button onClick={() => handleDelete(book.id)} className='delete-button fw-bold fst-italic'>Delete</button>
                                 </div>
                             </div>

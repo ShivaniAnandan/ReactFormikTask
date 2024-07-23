@@ -13,8 +13,8 @@ const CreateAuthor = () => {
     biography: '',
     image: ''
   });
-  // Array of random book images
-  const bookImages = [
+  // Array of random Author images
+  const authorImages = [
     "https://randomuser.me/api/portraits/women/1.jpg", 
     "https://randomuser.me/api/portraits/men/2.jpg", 
     "https://randomuser.me/api/portraits/women/3.jpg", 
@@ -38,8 +38,8 @@ const CreateAuthor = () => {
         validationSchema,
         onSubmit: async (values) => {
             // Generate a random image index
-            const randomImageIndex = Math.floor(Math.random() * bookImages.length);
-            const randomImage = bookImages[randomImageIndex];
+            const randomImageIndex = Math.floor(Math.random() * authorImages.length);
+            const randomImage = authorImages[randomImageIndex];
             // Create a new author object with random image
             const newAuthor = { ...values, image: randomImage };
             // Post new author to API

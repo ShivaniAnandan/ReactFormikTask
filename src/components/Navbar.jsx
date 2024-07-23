@@ -24,11 +24,6 @@ const Navbar = () => {
                                 {/* <a class="nav-link fw-bold fst-italic" href="#">Authors</a> */}
                             </li>
                         </ul>
-                        {/* <form class="d-flex">
-                            <button class="btn fst-italic text-white btn-success" type="submit">
-                                <Link to='/login' className='login '>Login</Link>
-                            </button>
-                        </form> */}
                     </div>
                 </div>
             </nav>

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const EditBook = ({ id }) => {
   const navigate = useNavigate();
-
+  // Initialize form values with empty strings
   const [initialValues, setInitialValues] = useState({
     title: '',
     author: '',
@@ -14,7 +14,7 @@ const EditBook = ({ id }) => {
     publicationDate: '',
     image: ''
   });
-
+  // Fetch the book data from the API when the component mounts
   useEffect(() => {
     fetchData();
   }, []);
@@ -25,7 +25,7 @@ const EditBook = ({ id }) => {
       .then((res) => setInitialValues(res.data))
       .catch((err) => console.log(err));
   };
-
+  // Array of random book images
   const bookImages = [
     "https://covers.openlibrary.org/b/id/8269481-L.jpg", // 1984 by George Orwell
     "https://covers.openlibrary.org/b/id/8282925-L.jpg", // The Great Gatsby by F. Scott Fitzgerald
@@ -38,7 +38,7 @@ const EditBook = ({ id }) => {
     "https://covers.openlibrary.org/b/id/8254152-L.jpg", // Crime and Punishment by Fyodor Dostoevsky
     "https://covers.openlibrary.org/b/id/8274201-L.jpg"  // The Brothers Karamazov by Fyodor Dostoevsky
   ];
-
+  // Validation schema using Yup
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is Required'),
     author: Yup.string().required('Author Name is Required'),
@@ -46,21 +46,23 @@ const EditBook = ({ id }) => {
     publicationDate: Yup.date().required('Publication Date is Required'),
     image: Yup.string().required('Image is Required')
   });
-
+  // Create formik instance with initial values and validation schema
   const formik = useFormik({
-    initialValues,
-    enableReinitialize: true,
+    initialValues,//formik.values
+    enableReinitialize: true, // This allows Formik to update the form values when the initialValues change
     validationSchema,
     onSubmit: async (values) => {
+      // Post new author to API
       await axios.put(`https://6697d1a302f3150fb66f1dbc.mockapi.io/api/books/${id}`, values)
         .then(res => console.log(res.data))
         .catch(err => console.log(err));
-        
+      // Navigate to authors page
       navigate('/books');
     }
   });
 
   return (
+    /* To apply same styles using same class names  */
     <div className="create-book-container">
       <h1 className='fw-bold fst-italic'>Edit a Book</h1>
       <form onSubmit={formik.handleSubmit}>

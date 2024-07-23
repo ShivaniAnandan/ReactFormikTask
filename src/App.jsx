@@ -30,7 +30,6 @@ function App() {
           <Route path='/authors' element={<Authors setId={setId}/>}/>
           <Route path='/createauthor' element={<CreateAuthor />} />
           <Route path='/editauthor/:id' element={<EditAuthor id={id}/>} />
-          {/* <Route path='/login' element={<Login />} /> */}
         </Routes>
         </BrowserRouter>
         
